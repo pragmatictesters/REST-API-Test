@@ -1,0 +1,99 @@
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+[Ll]ut/
+build/
+*.pdb
+*.opendb
+
+# Rider/JetBrains (IDE)
+.idea/
+*.sln.iml
+.Rider/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Visual Studio-specific files
+.vscode/
+.vs/
+*.vspscc
+*.vssscc
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.rsuser
+*.sln.ide
+*.cache/
+*.ilk
+*.log
+.vscode/
+
+# Mono Auto Generated Files
+mono_crash.*
+
+# Distribution Packages
+*.nupkg
+*.snupkg
+.packages
+
+# NuGet
+*.nupkg
+.nuget/
+packages/
+~$project.lock.json
+
+# Microsoft Azure
+azure-pipelines.yml
+# Azure Web App deployments
+.nuget/NuGet.Config
+.nuget/NuGet.exe
+
+# VSCode extensions
+.vscode/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Entity Framework migrations
+Migrations/
+
+# DotNet user-secrets, temporary files, etc.
+secrets.json
+.vscode/
+.secret/
+.secret/id_rsa
+
+# Project-specific files
+appsettings.json
+appsettings.Development.json
+appsettings.*.json
+
+# Log files
+*.log
+
+# Test results and other output
+TestResults/
+coverage/
+*.trx
+*.xml
+*.json
+*.coverlet/
+
+# Ignore Visual Studio build results
+REST-API-Tests/bin/
+REST-API-Tests/obj/
