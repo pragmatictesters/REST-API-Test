@@ -1,11 +1,7 @@
 namespace REST_API_Tests
-{
-    using NUnit.Framework;
-    using RestSharp;
-    using FluentAssertions;
-    using System.Net;
-    using Newtonsoft.Json.Linq;
 
+{
+  
     [TestFixture]
     public class ObjectCRUDOperationsTest
     {
