@@ -1,3 +1,5 @@
+using REST_API_Tests.Helpers; // Import the helper
+
 namespace REST_API_Tests
 
 
@@ -6,13 +8,15 @@ namespace REST_API_Tests
     public class ObjectCreationTests
     {
         private RestClient _client;
-        private string _baseUrl = "https://api.restful-api.dev";
+        private string _baseUrl;
         private string _createdObjectId;
 
 
         [SetUp]
         public void Setup()
         {
+            var config = ConfigurationHelper.GetConfiguration();
+            _baseUrl = config["ApiSettings:BaseUrl"];
             _client = new RestClient(_baseUrl);
         }
 

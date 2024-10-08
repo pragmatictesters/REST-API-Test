@@ -1,4 +1,8 @@
+using REST_API_Tests.Helpers; // Import the helper
+
 namespace REST_API_Tests
+
+
 
 {
   
@@ -6,13 +10,15 @@ namespace REST_API_Tests
     public class ObjectCRUDOperationsTest
     {
         private RestClient _client;
-        private string _baseUrl = "https://api.restful-api.dev";
+        private string _baseUrl;
         private bool _basicTestPassed;
 
         [SetUp]
         public void Setup()
         {
             // Initialize the RestClient with the base URL
+             var config = ConfigurationHelper.GetConfiguration();
+            _baseUrl = config["ApiSettings:BaseUrl"];
             _client = new RestClient(_baseUrl);
         }
 
