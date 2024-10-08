@@ -130,5 +130,76 @@ namespace REST_API_Tests
             data["CPU model"].ToString().Should().Be("Intel Core i9"); // Validate "CPU model"
             data["Hard disk size"].ToString().Should().Be("1 TB");     // Validate "Hard disk size"
         }
+
+        [Test]
+        public void UpdateObject_ShouldReturnUpdatedResponse()
+        {
+            // Arrange: Use the ID from the previous test to update the object
+            Assume.That(_createdObjectId, Is.Not.Null.Or.Empty, "No object ID available from creation step.");
+
+            var request = new RestRequest($"/objects/{_createdObjectId}", Method.Put);
+            var updatedData = new Dictionary<string, object>
+            {
+                { "year", 2019 },
+                { "price", 2049.99 },
+                { "CPU model", "Intel Core i9" },
+                { "Hard disk size", "1 TB" },
+                { "color", "silver" } // Adding the "color" field
+            };
+
+            var updateRequestBody = new
+            {
+                name = "Apple MacBook Pro 16",
+                data = updatedData
+            };
+
+            request.AddJsonBody(updateRequestBody);
+
+            // Act: Execute the PUT request to update the object
+            var response = _client.Execute(request);
+
+            // Assert: Validate that the object is updated successfully
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.ContentType.Should().Be("application/json");
+
+            // Parse the response content
+            var responseBody = JObject.Parse(response.Content);
+
+            // Assert that the "id" remains the same
+            responseBody["id"].ToString().Should().Be(_createdObjectId);
+
+            // Check if "name" exists and validate its value
+            responseBody["name"].Should().NotBeNull();
+            responseBody["name"].ToString().Should().Be("Apple MacBook Pro 16");
+
+            // Check the "data" object and its updated fields
+            var responseData = responseBody["data"];
+            responseData.Should().NotBeNull();  // Ensure the "data" field is present
+
+            if (responseData != null)
+            {
+                // Validate the updated fields in the "data" object
+                responseData["year"].Should().NotBeNull();
+                responseData["year"].ToObject<int>().Should().Be(2019);  // Check "year"
+
+                responseData["price"].Should().NotBeNull();
+                responseData["price"].ToObject<decimal>().Should().Be(2049.99M);  // Check "price"
+
+                responseData["CPU model"].Should().NotBeNull();
+                responseData["CPU model"].ToString().Should().Be("Intel Core i9");  // Check "CPU model"
+
+                responseData["Hard disk size"].Should().NotBeNull();
+                responseData["Hard disk size"].ToString().Should().Be("1 TB");  // Check "Hard disk size"
+
+                responseData["color"].Should().NotBeNull();
+                responseData["color"].ToString().Should().Be("silver");  // Check the new "color" field
+            }
+
+            // Check if "updatedAt" exists and validate its value
+            responseBody["updatedAt"].Should().NotBeNull();
+            var updatedAt = responseBody["updatedAt"].ToObject<DateTime>();
+            updatedAt.Should().BeAfter(DateTime.Now.AddSeconds(-60));  // Ensure updatedAt is recent (within the last 60 seconds)
+        }
+
     }
 }
