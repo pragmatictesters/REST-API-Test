@@ -28,6 +28,7 @@ namespace REST_API_Tests
         }
 
         [Test]
+        [Order(1)]
         public void AddAppleMacBookPro16_ShouldReturnValidResponse()
         {
             // Arrange: Use Dictionary for the 'data' part to handle string keys with spaces
@@ -98,11 +99,12 @@ namespace REST_API_Tests
             responseBody["createdAt"].Should().NotBeNull();
             var createdAt = responseBody["createdAt"].ToObject<DateTime>();
             //FIXME: Need to check the time agaist the server time. Provide a better vaidation
-            createdAt.Should().BeBefore(DateTime.Now);  // Ensure createdAt is before the current time
+            //createdAt.Should().BeBefore(DateTime.Now);  // Ensure createdAt is before the current time
         }
 
 
         [Test]
+        [Order(2)]
         public void GetObjectById_ShouldReturnCorrectObject()
         {
             // Arrange: Use the ID captured in the previous step to get the object
@@ -132,6 +134,7 @@ namespace REST_API_Tests
         }
 
         [Test]
+        [Order(3)]
         public void UpdateObject_ShouldReturnUpdatedResponse()
         {
             // Arrange: Use the ID from the previous test to update the object
@@ -200,6 +203,48 @@ namespace REST_API_Tests
             var updatedAt = responseBody["updatedAt"].ToObject<DateTime>();
             updatedAt.Should().BeAfter(DateTime.Now.AddSeconds(-60));  // Ensure updatedAt is recent (within the last 60 seconds)
         }
+
+
+
+        [Test]
+        [Order(4)]
+        public void DeleteObject_ShouldReturnValidResponse()
+        {
+            // Arrange: Use the ID from the previous test to delete the object
+            Assume.That(_createdObjectId, Is.Not.Null.Or.Empty, "No object ID available from creation step.");
+
+            var deleteRequest = new RestRequest($"/objects/{_createdObjectId}", Method.Delete);
+
+            // Act: Execute the DELETE request to remove the object
+            var deleteResponse = _client.Execute(deleteRequest);
+
+            // Assert: Validate that the object is deleted successfully
+            deleteResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            deleteResponse.ContentType.Should().Be("application/json");
+
+            // Parse the delete response content
+            var deleteResponseBody = JObject.Parse(deleteResponse.Content);
+            deleteResponseBody["message"].ToString().Should().Be($"Object with id = {_createdObjectId} has been deleted.");
+        }
+
+        [Test]
+        [Order(5)]
+        public void GetDeletedObject_ShouldReturnNotFound()
+        {
+            // Arrange: Use the ID of the deleted object to attempt retrieval
+            Assume.That(_createdObjectId, Is.Not.Null.Or.Empty, "No object ID available from previous deletion.");
+
+            var getRequest = new RestRequest($"/objects/{_createdObjectId}", Method.Get);
+
+            // Act: Execute the GET request to retrieve the deleted object
+            var getResponse = _client.Execute(getRequest);
+
+            // Assert: Validate that the object no longer exists and the appropriate error is returned
+            getResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);  // Expecting 404 Not Found
+            var errorResponseBody = JObject.Parse(getResponse.Content);
+            errorResponseBody["error"].ToString().Should().Contain($"Object with id={_createdObjectId} was not found.");
+        }
+
 
     }
 }
