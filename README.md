@@ -57,10 +57,13 @@ dotnet test --filter "AddObject_ShouldReturnValidResponse" Tes
 ## Test Structure
 
 The test suite is organized into the following key tests:
-- **Object Creation**: Verifies that objects can be created using the API's `POST` method.
-- **Object Retrieval**: Ensures that objects can be retrieved by their ID using the `GET` method.
-- **Object Update**: Tests the update functionality using the `PUT` method.
-- **Object Deletion**: Confirms that objects can be deleted and verifies the appropriate error message when trying to access a deleted object.
+
+- **[Object Creation](./REST-API-Tests/Tests/ObjectCRUDTests.cs)**: Verifies that objects can be created using the API's `POST` method.
+- **[Object Retrieval](./REST-API-Tests/Tests/ObjectCRUDTests.cs)**: Ensures that objects can be retrieved by their ID using the `GET` method.
+- **[Object Update](./REST-API-Tests/Tests/ObjectCRUDTests.cs)**: Tests the update functionality using the API's `PUT` method.
+- **[Object Deletion](./REST-API-Tests/Tests/ObjectCRUDTests.cs)**: Confirms that objects can be deleted and verifies the appropriate error message when trying to access a deleted object.
+- **[List All Objects](./REST-API-Tests/Tests/ObjectListingAndValidationTests.cs)**: Verifies that all objects can be listed using the API's `GET` method and ensures each key in the response contains valid data (e.g., checking for valid `id`, `name`, and `data` fields).
+
 
 ## Rate Limit Considerations
 
