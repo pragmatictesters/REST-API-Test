@@ -3,9 +3,8 @@ using REST_API_Tests.Helpers; // Import the helper
 namespace REST_API_Tests
 
 
-
 {
-  
+
     [TestFixture]
     public class ObjectCRUDOperationsTest
     {
@@ -17,7 +16,7 @@ namespace REST_API_Tests
         public void Setup()
         {
             // Initialize the RestClient with the base URL
-             var config = ConfigurationHelper.GetConfiguration();
+            var config = ConfigurationHelper.GetConfiguration();
             _baseUrl = config["ApiSettings:BaseUrl"];
             _client = new RestClient(_baseUrl);
         }
@@ -29,7 +28,7 @@ namespace REST_API_Tests
             _client?.Dispose();
         }
 
-        [Test]
+        [Test, Description("TC-OBJLIST-001: Verify retrieving all objects and validate the response")]
         [Order(1)]
         public void GetAllObjects_ShouldReturnValidResponse()
         {
@@ -62,7 +61,7 @@ namespace REST_API_Tests
             _basicTestPassed = true;
         }
 
-        [Test]
+        [Test, Description("TC-OBJLIST-002: Verify that the price field is valid and contains correct numeric data")]
         public void ValidatePrice_ShouldBeValidPrice()
         {
             Assume.That(_basicTestPassed, Is.True, "Basic validation must pass before running detailed data checks.");
@@ -86,7 +85,7 @@ namespace REST_API_Tests
             }
         }
 
-        [Test]
+        [Test, Description("TC-OBJLIST-003: Verify that the capacity field contains valid and correct values")]
         public void ValidateCapacity_ShouldBeValidCapacity()
         {
             Assume.That(_basicTestPassed, Is.True, "Basic validation must pass before running detailed data checks.");
@@ -113,7 +112,7 @@ namespace REST_API_Tests
             }
         }
 
-        [Test]
+        [Test, Description("TC-OBJLIST-004: Verify that the year field contains a valid and correct year")]
         public void ValidateYear_ShouldBeValidYear()
         {
             Assume.That(_basicTestPassed, Is.True, "Basic validation must pass before running detailed data checks.");
@@ -138,7 +137,7 @@ namespace REST_API_Tests
             }
         }
 
-        [Test]
+        [Test, Description("TC-OBJLIST-005: Verify that the color field contains a valid and correct color")]
         public void ValidateColor_ShouldBeValidColor()
         {
             Assume.That(_basicTestPassed, Is.True, "Basic validation must pass before running detailed data checks.");
@@ -165,7 +164,7 @@ namespace REST_API_Tests
             }
         }
 
-        [Test]
+        [Test, Description("TC-OBJLIST-006: Verify that the generation field contains valid and correct values")]
         public void ValidateGeneration_ShouldBeValidGeneration()
         {
             Assume.That(_basicTestPassed, Is.True, "Basic validation must pass before running detailed data checks.");

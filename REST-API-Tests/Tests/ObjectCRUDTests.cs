@@ -12,12 +12,14 @@ namespace REST_API_Tests
         private string _createdObjectId;
 
 
+
         [SetUp]
         public void Setup()
         {
             var config = ConfigurationHelper.GetConfiguration();
             _baseUrl = config["ApiSettings:BaseUrl"];
             _client = new RestClient(_baseUrl);
+
         }
 
         [TearDown]
@@ -26,9 +28,9 @@ namespace REST_API_Tests
             _client?.Dispose();
         }
 
-        [Test]
+        [Test, Description("TC-OBJ-001: Verify adding a new object and validate the response")]
         [Order(1)]
-        public void AddAppleMacBookPro16_ShouldReturnValidResponse()
+        public void AddObject_ShouldReturnValidResponse()
         {
             // Arrange: Use Dictionary for the 'data' part to handle string keys with spaces
             var request = new RestRequest("/objects", Method.Post);
@@ -102,7 +104,7 @@ namespace REST_API_Tests
         }
 
 
-        [Test]
+        [Test, Description("TC-OBJ-002: Verify retrieving the object details created in the previous test")]
         [Order(2)]
         public void GetObjectById_ShouldReturnCorrectObject()
         {
@@ -132,7 +134,7 @@ namespace REST_API_Tests
             data["Hard disk size"].ToString().Should().Be("1 TB");     // Validate "Hard disk size"
         }
 
-        [Test]
+        [Test, Description("TC-OBJ-003: Verify updating an existing object and validate the response")]
         [Order(3)]
         public void UpdateObject_ShouldReturnUpdatedResponse()
         {
@@ -204,8 +206,7 @@ namespace REST_API_Tests
         }
 
 
-
-        [Test]
+        [Test, Description("TC-OBJ-004-1: Verify deleting the created object and validate the deletion response")]
         [Order(4)]
         public void DeleteObject_ShouldReturnValidResponse()
         {
@@ -226,7 +227,7 @@ namespace REST_API_Tests
             deleteResponseBody["message"].ToString().Should().Be($"Object with id = {_createdObjectId} has been deleted.");
         }
 
-        [Test]
+        [Test, Description("TC-OBJ-004-2: Verify that attempting to retrieve a deleted object returns a NotFound error")]
         [Order(5)]
         public void GetDeletedObject_ShouldReturnNotFound()
         {
