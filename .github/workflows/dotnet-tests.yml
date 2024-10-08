@@ -1,4 +1,4 @@
-name: Run .NET Tests
+name: Run REST API Integration Tests
 
 on:
   push:
