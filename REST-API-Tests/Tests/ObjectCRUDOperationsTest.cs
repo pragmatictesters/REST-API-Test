@@ -28,6 +28,7 @@ namespace REST_API_Tests
         }
 
         [Test]
+        [Order(1)]
         public void GetAllObjects_ShouldReturnValidResponse()
         {
             // Arrange
