@@ -12,6 +12,8 @@ namespace REST_API_Tests
     {
         private RestClient _client;
         private string _baseUrl = "https://api.restful-api.dev";
+        private string _createdObjectId;
+
 
         [SetUp]
         public void Setup()
@@ -63,6 +65,10 @@ namespace REST_API_Tests
             responseBody.Should().NotBeNull();  // Ensure the response body is not null
             responseBody["id"].Should().NotBeNull(); // Ensure "id" exists
 
+            _createdObjectId = responseBody["id"].ToString(); // Store the created object's ID
+            _createdObjectId.Should().NotBeNullOrEmpty();     // Ensure the ID is not null or empty
+
+
             // Check if "name" exists and validate its value
             responseBody["name"].Should().NotBeNull();
             responseBody["name"].ToString().Should().Be("Apple MacBook Pro 16");
@@ -93,6 +99,36 @@ namespace REST_API_Tests
             var createdAt = responseBody["createdAt"].ToObject<DateTime>();
             //FIXME: Need to check the time agaist the server time. Provide a better vaidation
             createdAt.Should().BeBefore(DateTime.Now);  // Ensure createdAt is before the current time
+        }
+
+
+        [Test]
+        public void GetObjectById_ShouldReturnCorrectObject()
+        {
+            // Arrange: Use the ID captured in the previous step to get the object
+            Assume.That(_createdObjectId, Is.Not.Null.Or.Empty, "No object ID available from creation step.");
+
+            var request = new RestRequest($"/objects/{_createdObjectId}", Method.Get);
+
+            // Act: Execute the GET request to retrieve the object by ID
+            var response = _client.Execute(request);
+
+            // Assert: Validate that the object is retrieved successfully
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.ContentType.Should().Be("application/json");
+
+            // Parse the response content
+            var responseBody = JObject.Parse(response.Content);
+
+            // Assert that the object matches what was created
+            responseBody["id"].ToString().Should().Be(_createdObjectId); // Check the ID
+            responseBody["name"].ToString().Should().Be("Apple MacBook Pro 16");
+
+            var data = responseBody["data"];
+            data["year"].ToObject<int>().Should().Be(2019);            // Validate "year"
+            data["price"].ToObject<decimal>().Should().Be(1849.99M);   // Validate "price"
+            data["CPU model"].ToString().Should().Be("Intel Core i9"); // Validate "CPU model"
+            data["Hard disk size"].ToString().Should().Be("1 TB");     // Validate "Hard disk size"
         }
     }
 }
