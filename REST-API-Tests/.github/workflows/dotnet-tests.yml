@@ -1,0 +1,31 @@
+name: Run .NET Tests
+
+on:
+  push:
+    branches:
+      - main    # Run tests when code is pushed to the 'main' branch
+  pull_request:
+    branches:
+      - main    # Run tests when a pull request is created targeting the 'main' branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest   # Use the latest Ubuntu environment
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2  # Check out the code from the repository
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.0.x'  # Specify the version of .NET to use
+
+      - name: Install dependencies
+        run: dotnet restore         # Restore NuGet packages
+
+      - name: Build the project
+        run: dotnet build --no-restore  # Build the project
+
+      - name: Run tests
+        run: dotnet test --no-build --verbosity normal  # Run tests
