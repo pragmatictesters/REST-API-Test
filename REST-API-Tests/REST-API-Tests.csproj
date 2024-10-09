@@ -11,6 +11,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Allure.Net.Commons" Version="2.12.1" />
+    <PackageReference Include="Allure.NUnit" Version="2.12.1" />
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
     <PackageReference Include="FluentAssertions" Version="7.0.0-alpha.4" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
@@ -23,7 +25,7 @@
     <PackageReference Include="NLog.Extensions.Logging" Version="5.3.14" />
     <PackageReference Include="NUnit" Version="3.14.0" />
     <PackageReference Include="NUnit.Analyzers" Version="3.9.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
     <PackageReference Include="RestSharp" Version="112.1.0" />
     <PackageReference Include="SimpleJson" Version="0.38.0" />
   </ItemGroup>
@@ -43,6 +45,8 @@
     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </None>
 </ItemGroup>
+
+
 
 
 </Project>

@@ -1,10 +1,16 @@
 using REST_API_Tests.Helpers; // Import the helper
+using Allure.Net.Commons;
+using NUnit.Allure.Attributes;
+using NUnit.Allure.Core;
+using NUnit.Framework;
+
 
 namespace REST_API_Tests
 
 
 {
     [TestFixture]
+    [AllureNUnit]
     public class ObjectCreationTests
     {
         private RestClient _client;
@@ -41,6 +47,9 @@ namespace REST_API_Tests
         }
 
         [Test, Description("TC-OBJ-001: Verify adding a new object and validate the response")]
+        [AllureSuite("ObjectCreationTests")]
+        [AllureFeature("TC-OBJ-001: Verify adding a new object and validate the response")]
+        [AllureSeverity(SeverityLevel.normal)]  // Use SeverityLevel from Allure.Net.Commons
         [Order(1)]
         public void AddObject_ShouldReturnValidResponse()
         {
