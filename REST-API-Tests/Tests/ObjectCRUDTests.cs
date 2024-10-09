@@ -10,7 +10,15 @@ namespace REST_API_Tests
         private RestClient _client;
         private string _baseUrl;
         private string _createdObjectId;
+        private readonly ILogger<ObjectCreationTests> _logger;
 
+
+        public ObjectCreationTests()
+        {
+            // Initialize logger for this class
+            _logger = LoggerHelper.CreateLogger<ObjectCreationTests>();
+
+        }
 
 
         [SetUp]
@@ -19,6 +27,8 @@ namespace REST_API_Tests
             var config = ConfigurationHelper.GetConfiguration();
             _baseUrl = config["ApiSettings:BaseUrl"];
             _client = new RestClient(_baseUrl);
+            _logger.LogInformation("Initialized ObjectCRUDOperationsTest with BaseURL: {BaseUrl}", _baseUrl);
+
 
         }
 
@@ -26,12 +36,17 @@ namespace REST_API_Tests
         public void TearDown()
         {
             _client?.Dispose();
+            _logger.LogInformation("Tearing down the test AddObject_ShouldReturnValidResponse.");
+            LoggerHelper.Shutdown();  // Ensure NLog flushes logs
         }
 
         [Test, Description("TC-OBJ-001: Verify adding a new object and validate the response")]
         [Order(1)]
         public void AddObject_ShouldReturnValidResponse()
         {
+
+            _logger.LogInformation("Starting test: AddObject_ShouldReturnValidResponse");
+
             // Arrange: Use Dictionary for the 'data' part to handle string keys with spaces
             var request = new RestRequest("/objects", Method.Post);
             var data = new Dictionary<string, object>
@@ -101,6 +116,9 @@ namespace REST_API_Tests
             var createdAt = responseBody["createdAt"].ToObject<DateTime>();
             //FIXME: Need to check the time agaist the server time. Provide a better vaidation
             //createdAt.Should().BeBefore(DateTime.Now);  // Ensure createdAt is before the current time
+
+            _logger.LogInformation("Test AddObject_ShouldReturnValidResponse completed successfully.");
+
         }
 
 
