@@ -135,6 +135,8 @@ namespace REST_API_Tests
         [Order(2)]
         public void GetObjectById_ShouldReturnCorrectObject()
         {
+            _logger.LogInformation("Starting test: GetObjectById_ShouldReturnCorrectObject");
+
             // Arrange: Use the ID captured in the previous step to get the object
             Assume.That(_createdObjectId, Is.Not.Null.Or.Empty, "No object ID available from creation step.");
 
@@ -159,12 +161,16 @@ namespace REST_API_Tests
             data["price"].ToObject<decimal>().Should().Be(1849.99M);   // Validate "price"
             data["CPU model"].ToString().Should().Be("Intel Core i9"); // Validate "CPU model"
             data["Hard disk size"].ToString().Should().Be("1 TB");     // Validate "Hard disk size"
+            _logger.LogInformation("Completed test: GetObjectById_ShouldReturnCorrectObject");
+
         }
 
         [Test, Description("TC-OBJ-003: Verify updating an existing object and validate the response")]
         [Order(3)]
         public void UpdateObject_ShouldReturnUpdatedResponse()
         {
+            _logger.LogInformation("Starting test: UpdateObject_ShouldReturnUpdatedResponse");
+
             // Arrange: Use the ID from the previous test to update the object
             Assume.That(_createdObjectId, Is.Not.Null.Or.Empty, "No object ID available from creation step.");
 
@@ -230,6 +236,8 @@ namespace REST_API_Tests
             responseBody["updatedAt"].Should().NotBeNull();
             var updatedAt = responseBody["updatedAt"].ToObject<DateTime>();
             updatedAt.Should().BeAfter(DateTime.Now.AddSeconds(-60));  // Ensure updatedAt is recent (within the last 60 seconds)
+            _logger.LogInformation("Completed test: UpdateObject_ShouldReturnUpdatedResponse");
+
         }
 
 
@@ -237,6 +245,8 @@ namespace REST_API_Tests
         [Order(4)]
         public void DeleteObject_ShouldReturnValidResponse()
         {
+            _logger.LogInformation("Starting test: DeleteObject_ShouldReturnValidResponse");
+
             // Arrange: Use the ID from the previous test to delete the object
             Assume.That(_createdObjectId, Is.Not.Null.Or.Empty, "No object ID available from creation step.");
 
@@ -252,6 +262,8 @@ namespace REST_API_Tests
             // Parse the delete response content
             var deleteResponseBody = JObject.Parse(deleteResponse.Content);
             deleteResponseBody["message"].ToString().Should().Be($"Object with id = {_createdObjectId} has been deleted.");
+            _logger.LogInformation("Completed test: DeleteObject_ShouldReturnValidResponse");
+
         }
 
         [Test, Description("TC-OBJ-004-2: Verify that attempting to retrieve a deleted object returns a NotFound error")]
@@ -259,6 +271,8 @@ namespace REST_API_Tests
         [Order(5)]
         public void GetDeletedObject_ShouldReturnNotFound()
         {
+            _logger.LogInformation("Starting test: GetDeletedObject_ShouldReturnNotFound");
+
             // Arrange: Use the ID of the deleted object to attempt retrieval
             Assume.That(_createdObjectId, Is.Not.Null.Or.Empty, "No object ID available from previous deletion.");
 
@@ -271,6 +285,8 @@ namespace REST_API_Tests
             getResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);  // Expecting 404 Not Found
             var errorResponseBody = JObject.Parse(getResponse.Content);
             errorResponseBody["error"].ToString().Should().Contain($"Object with id={_createdObjectId} was not found.");
+            _logger.LogInformation("Completed test: GetDeletedObject_ShouldReturnNotFound");
+
         }
 
 

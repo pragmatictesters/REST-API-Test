@@ -6,11 +6,20 @@ namespace REST_API_Tests
 {
 
     [TestFixture]
-    public class ObjectCRUDOperationsTest
+    public class ObjectListingAndValidationTests
     {
         private RestClient _client;
         private string _baseUrl;
         private bool _basicTestPassed;
+        private readonly ILogger<ObjectListingAndValidationTests> _logger;
+
+
+        public ObjectListingAndValidationTests()
+        {
+            // Initialize logger for this class
+            _logger = LoggerHelper.CreateLogger<ObjectListingAndValidationTests>();
+        }
+
 
         [SetUp]
         public void Setup()
@@ -19,6 +28,8 @@ namespace REST_API_Tests
             var config = ConfigurationHelper.GetConfiguration();
             _baseUrl = config["ApiSettings:BaseUrl"];
             _client = new RestClient(_baseUrl);
+            _logger.LogInformation("Initialized ObjectListingAndValidationTests with BaseURL: {BaseUrl}", _baseUrl);
+
         }
 
         [TearDown]
@@ -32,6 +43,8 @@ namespace REST_API_Tests
         [Order(1)]
         public void GetAllObjects_ShouldReturnValidResponse()
         {
+            _logger.LogInformation("Starting test: GetAllObjects_ShouldReturnValidResponse");
+
             // Arrange
             var request = new RestRequest("/objects", Method.Get);
 
@@ -59,11 +72,15 @@ namespace REST_API_Tests
 
             // If everything passed, set the flag to true
             _basicTestPassed = true;
+            _logger.LogInformation("Completed test: GetAllObjects_ShouldReturnValidResponse");
+
         }
 
         [Test, Description("TC-OBJLIST-002: Verify that the price field is valid and contains correct numeric data")]
         public void ValidatePrice_ShouldBeValidPrice()
         {
+            _logger.LogInformation("Starting test: ValidatePrice_ShouldBeValidPrice");
+
             Assume.That(_basicTestPassed, Is.True, "Basic validation must pass before running detailed data checks.");
 
             var request = new RestRequest("/objects", Method.Get);
@@ -83,11 +100,15 @@ namespace REST_API_Tests
                     }
                 }
             }
+            _logger.LogInformation("Completed test: ValidatePrice_ShouldBeValidPrice");
+
         }
 
         [Test, Description("TC-OBJLIST-003: Verify that the capacity field contains valid and correct values")]
         public void ValidateCapacity_ShouldBeValidCapacity()
         {
+            _logger.LogInformation("Starting test: ValidateCapacity_ShouldBeValidCapacity");
+
             Assume.That(_basicTestPassed, Is.True, "Basic validation must pass before running detailed data checks.");
 
             var request = new RestRequest("/objects", Method.Get);
@@ -110,11 +131,15 @@ namespace REST_API_Tests
                     }
                 }
             }
+            _logger.LogInformation("Completed test: ValidateCapacity_ShouldBeValidCapacity");
+
         }
 
         [Test, Description("TC-OBJLIST-004: Verify that the year field contains a valid and correct year")]
         public void ValidateYear_ShouldBeValidYear()
         {
+            _logger.LogInformation("Starting test: ValidateYear_ShouldBeValidYear");
+
             Assume.That(_basicTestPassed, Is.True, "Basic validation must pass before running detailed data checks.");
 
             var request = new RestRequest("/objects", Method.Get);
@@ -135,11 +160,15 @@ namespace REST_API_Tests
                     }
                 }
             }
+            _logger.LogInformation("Completed test: ValidateYear_ShouldBeValidYear");
+
         }
 
         [Test, Description("TC-OBJLIST-005: Verify that the color field contains a valid and correct color")]
         public void ValidateColor_ShouldBeValidColor()
         {
+            _logger.LogInformation("Starting test: ValidateColor_ShouldBeValidColor");
+
             Assume.That(_basicTestPassed, Is.True, "Basic validation must pass before running detailed data checks.");
 
             var request = new RestRequest("/objects", Method.Get);
@@ -162,11 +191,15 @@ namespace REST_API_Tests
                     }
                 }
             }
+            _logger.LogInformation("Completed test: ValidateColor_ShouldBeValidColor");
+
         }
 
         [Test, Description("TC-OBJLIST-006: Verify that the generation field contains valid and correct values")]
         public void ValidateGeneration_ShouldBeValidGeneration()
         {
+            _logger.LogInformation("Starting test: ValidateGeneration_ShouldBeValidGeneration");
+
             Assume.That(_basicTestPassed, Is.True, "Basic validation must pass before running detailed data checks.");
 
             var request = new RestRequest("/objects", Method.Get);
@@ -189,6 +222,8 @@ namespace REST_API_Tests
                     }
                 }
             }
+            _logger.LogInformation("Completed test: ValidateGeneration_ShouldBeValidGeneration");
+
         }
     }
 }
